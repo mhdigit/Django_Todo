@@ -1,0 +1,47 @@
+{% load static %}
+
+
+
+  <link rel="stylesheet" href="{% static 'css/account.css' %}">
+
+
+  <body>
+
+
+    <div class="user-login-wrap">
+        <form method="post" action="{% url 'accounts:register' %}">
+            <h3>User Registration
+                
+            </h3>
+
+            {% csrf_token %} 
+            <label> {{form.username.label}}<span> * </span></label>
+            {{form.username}}
+             <label>{{form.password1.label}}<span> * </span></label>
+            {{form.password1}}
+             <label>{{form.password2.label}}<span> * </span></label>
+            {{form.password2}}
+
+
+            
+            {% if msg %}
+      
+                {% for k,v in msg.items %}
+
+                {{v}}
+                
+           
+                {% endfor %}
+            {% endif %}
+
+           
+            <button type="submit">Sign Up</button>
+            <p class="check-account">Already have an account? Sign In  <a  href="{% url 'accounts:login' %}">here</a></p>
+           
+
+            
+    
+        </form>
+    </div>
+
+</body>

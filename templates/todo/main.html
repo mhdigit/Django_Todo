@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title>Todo List</title>
+</head>
+<body>
+    <header id="main-header">
+        <div class="user-info">
+            <div><span>{{user.username}}</span></div>
+            <div>
+                <a href="{% url 'accounts:logout' %}">Logout</a>
+            </div>
+        </div>
+        <div class="container">
+            <h1>Just Do it!</h1>
+        
+            <form method="POST" action="{% url 'todo:create_task' %}"  id="todo-form">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="e.g. Buy groceries" autofocus >
+                <button type="submit">Add task</button>
+            </form>
+        </div>
+    </header>
+        
+    <section>
+        <div class="container" id="main-content">
+            <ul class="stats">
+                <li>
+                    <span>Remaining</span>
+                    <span id="remaining-tasks">{{stats.remaining}}</span>
+                <li>
+                    <span>Completed</span>
+                    <span id="completed-tasks">{{stats.complete}}</span>
+                
+                </i>
+                <li>
+                    <span>Total</span>
+                    <span id="total-tasks">{{stats.total}}</span>
+                </i>
+            </ul>
+            <ul class="todos">
+                {% for task in tasks %}
+
+                <li id="{{task.id}}" {% if task.complete  %}class="complete"{% endif %}>
+                    <div>
+                        <input type="checkbox" onchange="check(this)" name="tasks" id="{{task.id}}" 
+                        {% if task.complete  %}checked{% endif %} >
+                        <span 
+                        {% if not task.complete  %}contenteditable{% endif %}
+                         data-name="{{task.title}}"
+                         data-complete="{{task.complete}}"
+                         onblur="edit(this)"
+                         >{{task.title}}</span>
+                   </div>
+                  
+                   {% comment %} <a type="button" class="btn btn-danger" href="{% url 'delete_task' task.id %}"><i class="bi bi-trash"></i></a> {% endcomment %}
+                   <form mehtod="POST" action="{% url 'todo:delete_task' task.id %}" type="submit">
+                    {% csrf_token %}
+                   <button title="Remove the {{task.title}} task" class="remove-task">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M17.25 17.25L6.75 6.75"
+                            stroke="#A4DOE3" stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round" />
+                            <path d="M17.25 6.75L6.75 17.25"
+                            stroke="#A4DOE3" stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        </svg>
+                
+                   </button> 
+                </form>
+
+                </li>
+
+                {% endfor %}
+
+            </ul>
+        
+        </div>
+    </section>
+        
+    
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+
+
+

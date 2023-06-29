@@ -1,0 +1,49 @@
+
+
+
+{% load static %}
+
+
+  <link rel="stylesheet" href="{% static 'css/account.css' %}">
+
+  <body>
+   
+
+    <div class="user-login-wrap">
+        <form method="post" action="{% url 'accounts:login' %}">
+            <h3>Login
+               
+            </h3>
+
+            {% csrf_token %} 
+            <label>  {{form.username.label}}<span> * </span></label>
+            {{form.username}}
+             <label>{{form.password.label}}<span> * </span></label>
+            {{form.password}}
+            <input type="hidden" name="next" value="{{ request.GET.next }}" />
+
+
+
+            
+            {% if msg %}
+      
+                {% for k,v in msg.items %}
+
+                {{v}}
+                
+           
+                {% endfor %}
+            {% endif %}
+
+           
+            <button type="submit">Sign In</button>
+
+            <p class="check-account">Don't have an account yet?  Register <a  href="{% url 'accounts:register' %}">here</a></p>
+
+           
+
+
+        </form>
+    </div>
+
+</body>

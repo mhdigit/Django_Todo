@@ -1,0 +1,131 @@
+
+
+:root {
+  --body-font: 'Figtree', sans-serif;
+  --color-body: #E8F3F8;
+  --color-header: #061b25;
+  --color-text: var(--color-header);
+  --color-text-muted: #A4D0E3;
+  --color-input: #082937;
+  --color-input-lighter: #0b374a;
+  --color-secondary: #FF8C42;
+  --color-secondary-darker: #cc7035;
+  --color-secondary-lighter: #ffa368;
+  --color-tertiary: #1C89B8;
+  --color-text-badge: #E8F3F8;
+  --color-disabled: #D2E7F1;
+  --color-text-disabled: #77B8D4;
+  --global-border-radius: 6px;
+  --global-transition: all .2s ease-in-out;
+  
+}
+
+
+
+body {
+    background-color: var(--color-header);
+    margin: 0;
+  }
+  body .user-login-wrap {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-image: url("https://res.cloudinary.com/diklvaj2n/image/upload/v1686658737/2080500_g2ouge.png"); */
+    /* background: url(../img/hero-bg.jpg) center; */
+    /* background-color: ; */
+    /* background-size: cover; */
+    /* background-position: center; */
+    /* opacity: .5; */
+  }
+  body .user-login-wrap form {
+    background-color: rgba(255, 255, 255, 0.07);
+    margin: 0 auto;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 50px 35px;
+    font-family: "Poppins", sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
+  }
+  label > span {
+    color:red;
+  }
+
+  body .user-login-wrap form h3 {
+    font-size: 27px;
+    font-weight: 500;
+    line-height: 42px;
+    margin: 0;
+  }
+  body .user-login-wrap form h3 span {
+    display: block;
+    font-size: 16px;
+    font-weight: 300;
+    color: #e5e5e5;
+  }
+  body .user-login-wrap form label {
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  body .user-login-wrap form input {
+    display: block;
+    height: 40px;
+    width: 100%;
+    background-color: var(--color-input);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    border: none;
+    color:  var(--color-text-muted);
+    box-sizing: border-box;
+  }
+  body .user-login-wrap form input::placeholder {
+    color: var(--color-text-muted);
+  }
+  body .user-login-wrap form button {
+    margin-top: 50px;
+    width: 100%;
+    background-color: var( --color-secondary-darker);
+    color: white;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+  }
+
+  body .user-login-wrap form button:hover {
+    background-color: var( --color-secondary-lighter);
+
+  }
+  body .user-login-wrap form .forgot-password {
+    font-size: 12px;
+    color: #fff;
+    font-weight: 400;
+    display: block;
+    margin-top: 30px;
+  }
+
+  .check-account {
+    margin-top: 2rem;
+  }
+
+  .check-account > a {
+    color:var(--color-tertiary);
+  }
