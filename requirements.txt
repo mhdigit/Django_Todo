@@ -6,3 +6,4 @@ djangorestframework>3.12,<3.13
 markdown       
 django-filter 
 django-cors-headers
+drf-yasg[validation]
