@@ -30,20 +30,12 @@ class RegistrationApiView(generics.GenericAPIView):
             relativeLink = reverse("accounts:email_verify")
             absurl = "http://" + current_site + \
                 relativeLink + "?token=" + str(token)
-            # email_body = 'Hi '+user.email + \
-            #     ' Use the link below to verify your email \n' + absurl
-            # data = {'email_body': email_body, 'to_email': user.email,
-            #         'email_subject': 'Verify your email'}
-            #  Util.send_email(data)
+
             data = {"email": user.email, "link": absurl, "site": current_site}
             Util.send_templated_email(
                 "emails/verification_template.html", data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # def get_tokens_for_user(self, user):
-    #     refresh = RefreshToken.for_user(user)
-    #     return str(refresh.access_token)
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
