@@ -26,19 +26,18 @@ class RegistrationApiView(generics.GenericAPIView):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            user = User.objects.get(email=serializer.validated_data['email'])
+            user = User.objects.get(email=serializer.validated_data["email"])
             token = RefreshToken.for_user(user).access_token
             current_site = get_current_site(request).domain
-            relativeLink = reverse('accounts:email_verify')
-            absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
+            relativeLink = reverse("accounts:email_verify")
+            absurl = "http://" + current_site + relativeLink + "?token=" + str(token)
             # email_body = 'Hi '+user.email + \
             #     ' Use the link below to verify your email \n' + absurl
             # data = {'email_body': email_body, 'to_email': user.email,
             #         'email_subject': 'Verify your email'}
             #  Util.send_email(data)
-            data = {'email': user.email, "link": absurl, "site": current_site}
-            Util.send_templated_email(
-                'emails/verification_template.html', data)
+            data = {"email": user.email, "link": absurl, "site": current_site}
+            Util.send_templated_email("emails/verification_template.html", data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -48,7 +47,6 @@ class RegistrationApiView(generics.GenericAPIView):
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
-
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(
             data=request.data, context={"request": request}
@@ -118,10 +116,10 @@ class TestEmailSend(generics.GenericAPIView):
         token = self.get_tokens_for_user(user)
 
         current_site = get_current_site(request).domain
-        relativeLink = reverse('accounts:profile')
-        absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
-        data = {'email': user.email, "link": absurl, "site": current_site}
-        Util.send_templated_email('emails/verification_template.html', data)
+        relativeLink = reverse("accounts:profile")
+        absurl = "http://" + current_site + relativeLink + "?token=" + str(token)
+        data = {"email": user.email, "link": absurl, "site": current_site}
+        Util.send_templated_email("emails/verification_template.html", data)
 
         return Response("email sent")
 
@@ -140,11 +138,12 @@ class VerifyEmailApiView(generics.GenericAPIView):
         if not user.is_verified:
             user.is_verified = True
             user.save()
-        return Response({"detail": "user verified successfully"}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": "user verified successfully"}, status=status.HTTP_200_OK
+        )
 
 
 class ResendVerifyEmailApiView(generics.GenericAPIView):
-
     serializer_class = ResendVerifyTokenSerializer
 
     def post(self, request):
@@ -153,13 +152,15 @@ class ResendVerifyEmailApiView(generics.GenericAPIView):
             user = serializer.validated_data["instance"]
             token = RefreshToken.for_user(user).access_token
             current_site = get_current_site(request).domain
-            relativeLink = reverse('accounts:email_verify')
-            absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
-            data = {'email': user.email, "link": absurl, "site": current_site}
-            Util.send_templated_email(
-                'emails/verification_template.html', data)
+            relativeLink = reverse("accounts:email_verify")
+            absurl = "http://" + current_site + relativeLink + "?token=" + str(token)
+            data = {"email": user.email, "link": absurl, "site": current_site}
+            Util.send_templated_email("emails/verification_template.html", data)
 
-            return Response({"details": "verification mail has been sent"}, status=status.HTTP_201_CREATED)
+            return Response(
+                {"details": "verification mail has been sent"},
+                status=status.HTTP_201_CREATED,
+            )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -174,15 +175,19 @@ class PasswordResetRequestEmailApiView(generics.GenericAPIView):
         token = RefreshToken.for_user(user).access_token
         # reverse('accounts:password-reset-confirm')
         relativeLink = "/accounts/reset-password"
-        current_site = get_current_site(
-            request=request).domain
-        absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
-        data = {'email': user.email, "link": absurl, "site": current_site}
-        Util.send_templated_email('emails/reset_password_template.html', data)
-        return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+        current_site = get_current_site(request=request).domain
+        absurl = "http://" + current_site + relativeLink + "?token=" + str(token)
+        data = {"email": user.email, "link": absurl, "site": current_site}
+        Util.send_templated_email("emails/reset_password_template.html", data)
+        return Response(
+            {"success": "We have sent you a link to reset your password"},
+            status=status.HTTP_200_OK,
+        )
 
 
-class PasswordResetTokenValidateApiView(mixins.RetrieveModelMixin, generics.GenericAPIView):
+class PasswordResetTokenValidateApiView(
+    mixins.RetrieveModelMixin, generics.GenericAPIView
+):
     serializer_class = PasswordResetTokenVerificationSerializer
 
     def post(self, request):
@@ -198,4 +203,6 @@ class PasswordResetSetNewApiView(generics.GenericAPIView):
     def patch(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        return Response({'detail': 'Password reset successfully'}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": "Password reset successfully"}, status=status.HTTP_200_OK
+        )

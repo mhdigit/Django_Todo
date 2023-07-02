@@ -23,19 +23,18 @@ class TaskList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['tasks'] = context['tasks'].filter(user=self.request.user)
-        total = context['tasks'].count()
-        complete = context['tasks'].filter(complete=True).count()
+        total = context["tasks"].count()
+        complete = context["tasks"].filter(complete=True).count()
         remaining = total - complete
-        context['stats'] = {
-            'total': total,
-            'complete':complete,
-            'remaining':remaining,
+        context["stats"] = {
+            "total": total,
+            "complete": complete,
+            "remaining": remaining,
         }
-
 
         return context
 
@@ -57,13 +56,11 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 #     fields = ['complete']
 
 
-
 #     def post(self, request, *args, **kwargs):
 
 #         return super().post(request, *args, **kwargs)
-    # form_class = TaskUpdateForm
-    # template_name = "todo/update_task.html"
-    
+# form_class = TaskUpdateForm
+# template_name = "todo/update_task.html"
 
 
 class TaskUpdate(LoginRequiredMixin, View):
@@ -71,26 +68,22 @@ class TaskUpdate(LoginRequiredMixin, View):
     model = Task
     success_url = reverse_lazy("todo:task_list")
 
-
     def post(self, request, *args, **kwargs):
         obj = self.model.objects.get(id=kwargs.get("pk"))
-      
-        if 'complete' in request.POST.keys() :
-            complete = int(request.POST.get('complete'))
-            print(complete,type(complete))
+
+        if "complete" in request.POST.keys():
+            complete = int(request.POST.get("complete"))
+            print(complete, type(complete))
             if complete:
                 obj.complete = True
             else:
                 obj.complete = False
             obj.save()
 
-        if 'title' in request.POST.keys() :
-            title = str(request.POST.get('title'))
+        if "title" in request.POST.keys():
+            title = str(request.POST.get("title"))
             obj.title = title
             obj.save()
-
-
-
 
         return redirect(self.success_url)
 

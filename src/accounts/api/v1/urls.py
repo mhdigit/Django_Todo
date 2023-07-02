@@ -12,16 +12,15 @@ urlpatterns = [
         views.RegistrationApiView.as_view(),
         name="registration",
     ),
-
     path(
         "register/email-verify/",
         views.VerifyEmailApiView.as_view(),
-        name="email_verify"
+        name="email_verify",
     ),
     path(
         "register/email-verify/resend/",
         views.ResendVerifyEmailApiView.as_view(),
-        name="email_verify_resend"
+        name="email_verify_resend",
     ),
     # ================ change password ==================================
     path(
@@ -33,20 +32,18 @@ urlpatterns = [
     path(
         "reset-password/",
         views.PasswordResetRequestEmailApiView.as_view(),
-        name="reset-password-request"
+        name="reset-password-request",
     ),
     path(
         "reset-password/validate-token/",
         views.PasswordResetTokenValidateApiView.as_view(),
-        name="reset-password-validate"
+        name="reset-password-validate",
     ),
-
     path(
         "reset-password/set-password/",
         views.PasswordResetSetNewApiView.as_view(),
-        name="reset-password-confirm"
+        name="reset-password-confirm",
     ),
-
     # =============== login token =========================================
     path(
         "token/login/",

@@ -11,15 +11,9 @@ class TodoListView(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
-        return (
-            super()
-            .get_queryset(*args, **kwargs)
-            .filter(user=self.request.user)
-        )
-    
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+
     def list(self, request):
-       
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
-    
