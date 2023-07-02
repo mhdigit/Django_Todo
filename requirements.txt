@@ -7,3 +7,10 @@ markdown
 django-filter 
 django-cors-headers
 drf-yasg[validation]
+djangorestframework-simplejwt
+djoser
+django-templated-mail
+
+
+flake8
+black
