@@ -8,9 +8,9 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     # =============== registration ============================
     path(
-        "registration/",
+        "register/",
         views.RegistrationApiView.as_view(),
-        name="registration",
+        name="register",
     ),
     path(
         "register/email-verify/",
