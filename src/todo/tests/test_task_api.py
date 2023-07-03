@@ -24,19 +24,15 @@ def common_user():
 
 @pytest.fixture
 def common_task(common_user):
-    task = Task.objects.create(
-        user=common_user, title="test_title", complete=True
-    )
+    task = Task.objects.create(user=common_user, title="test_title", complete=True)
     return task
 
 
 @pytest.mark.django_db
 class TestTaskApi:
-
     # ========================== Read =========================================
 
     def test_get_task_response_200_status(self, api_client, common_user, common_task):
-
         url = reverse("todo:api-v1:task-list")
         user = common_user
         api_client.force_authenticate(user=user)
@@ -44,9 +40,10 @@ class TestTaskApi:
         assert common_task.title in response.json()[0].values()
         assert response.status_code == 200
 
-    def test_get_task_detail_response_200_status(self, api_client, common_user, common_task):
-
-        url = reverse("todo:api-v1:task-detail", kwargs={'pk': common_task.id})
+    def test_get_task_detail_response_200_status(
+        self, api_client, common_user, common_task
+    ):
+        url = reverse("todo:api-v1:task-detail", kwargs={"pk": common_task.id})
         user = common_user
         api_client.force_authenticate(user=user)
         response = api_client.get(url)
@@ -60,7 +57,6 @@ class TestTaskApi:
         data = {
             "title": "test",
             "complete": True,
-
         }
         response = api_client.post(url, data)
         assert response.status_code == 403
@@ -71,12 +67,11 @@ class TestTaskApi:
             "user": common_user,
             "title": "test",
             "complete": True,
-
         }
         user = common_user
         api_client.force_authenticate(user=user)
         response = api_client.post(url, data)
-        assert data['title'] == response.json()['title']
+        assert data["title"] == response.json()["title"]
         assert response.status_code == 201
 
     def test_create_task_invalid_data_response_400_status(
@@ -85,8 +80,7 @@ class TestTaskApi:
         url = reverse("todo:api-v1:task-list")
         data = {
             "title": "test",
-            "complete": 'test',
-
+            "complete": "test",
         }
         user = common_user
 
@@ -96,21 +90,24 @@ class TestTaskApi:
 
     #  =================== update ==========================================
 
-    def test_update_task_response_200_status(self, api_client, common_user, common_task):
-
-        url = reverse("todo:api-v1:task-detail", kwargs={'pk': common_task.id})
+    def test_update_task_response_200_status(
+        self, api_client, common_user, common_task
+    ):
+        url = reverse("todo:api-v1:task-detail", kwargs={"pk": common_task.id})
         user = common_user
         api_client.force_authenticate(user=user)
-        data = {'title': 'title_edited'}
+        data = {"title": "title_edited"}
 
         response = api_client.patch(url, data)
-        assert data['title'] == response.json()['title']
+        assert data["title"] == response.json()["title"]
         assert response.status_code == 200
 
     # =================== delete ==========================================
-    def test_update_task_response_204_status(self, api_client, common_user, common_task):
+    def test_update_task_response_204_status(
+        self, api_client, common_user, common_task
+    ):
         assert Task.objects.count() == 1
-        url = reverse("todo:api-v1:task-detail", kwargs={'pk': common_task.id})
+        url = reverse("todo:api-v1:task-detail", kwargs={"pk": common_task.id})
         user = common_user
         api_client.force_authenticate(user=user)
         response = api_client.delete(url)
