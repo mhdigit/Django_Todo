@@ -17,4 +17,6 @@ jobs:
     - name: Build the Docker-Compose
       run: docker-compose up -d 
     - name: Run Tests
-      run: docker-compose exec backend pytest .
+      run: docker-compose exec backend sh -c "pytest ."
+      env:
+        COMPOSE_INTERACTIVE_NO_CLI: 1
