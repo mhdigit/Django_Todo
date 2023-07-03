@@ -29,8 +29,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs.get("password") != attrs.get("password1"):
-            raise serializers.ValidationError(
-                {"detail": "passswords doesnt match"})
+            raise serializers.ValidationError({"detail": "passswords doesnt match"})
 
         try:
             validate_password(attrs.get("password"))
@@ -64,14 +63,12 @@ class ChangePasswordSerialier(serializers.Serializer):
 
     def validate(self, attrs):
         if attrs.get("new_password") != attrs.get("new_password1"):
-            raise serializers.ValidationError(
-                {"detail": "passswords doesnt match"})
+            raise serializers.ValidationError({"detail": "passswords doesnt match"})
 
         try:
             validate_password(attrs.get("new_password"))
         except exceptions.ValidationError as e:
-            raise serializers.ValidationError(
-                {"new_password": list(e.messages)})
+            raise serializers.ValidationError({"new_password": list(e.messages)})
 
         return super().validate(attrs)
 
@@ -98,13 +95,11 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         token = attrs["token"]
         try:
-            payload = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"])
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user = User.objects.get(id=payload["user_id"])
         except jwt.ExpiredSignatureError as identifier:
             return ValidationError({"detail": "Activation Expired"})
         except jwt.exceptions.DecodeError as identifier:
-
             raise ValidationError({"detail": "Invalid token"})
 
         attrs["user"] = user
@@ -122,8 +117,7 @@ class ResendVerifyTokenSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         user = get_object_or_404(User, email=attrs.get("email"))
         if user.is_active:
-            raise serializers.ValidationError(
-                {"details": "User already verified"})
+            raise serializers.ValidationError({"details": "User already verified"})
         attrs["instance"] = user
         return attrs
 
@@ -138,8 +132,7 @@ class PasswordResetRequestEmailSerializer(serializers.Serializer):
         try:
             user = User.objects.get(email=attrs["email"])
         except User.DoesNotExist:
-            raise ValidationError(
-                {"detail": "There is no user with provided email"})
+            raise ValidationError({"detail": "There is no user with provided email"})
         attrs["user"] = user
         return super().validate(attrs)
 
@@ -154,8 +147,7 @@ class PasswordResetTokenVerificationSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         token = attrs["token"]
         try:
-            payload = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"])
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user = User.objects.get(id=payload["user_id"])
         except jwt.ExpiredSignatureError as identifier:
             return ValidationError({"detail": "Token expired"})
@@ -168,23 +160,19 @@ class PasswordResetTokenVerificationSerializer(serializers.ModelSerializer):
 
 class SetNewPasswordSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=600)
-    password = serializers.CharField(
-        min_length=6, max_length=68, write_only=True)
-    password1 = serializers.CharField(
-        min_length=6, max_length=68, write_only=True)
+    password = serializers.CharField(min_length=6, max_length=68, write_only=True)
+    password1 = serializers.CharField(min_length=6, max_length=68, write_only=True)
 
     class Meta:
         fields = ["password", "password1", "token"]
 
     def validate(self, attrs):
         if attrs["password"] != attrs["password1"]:
-            raise serializers.ValidationError(
-                {"details": "Passwords does not match"})
+            raise serializers.ValidationError({"details": "Passwords does not match"})
         try:
             password = attrs.get("password")
             token = attrs.get("token")
-            payload = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"])
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user = User.objects.get(id=payload["user_id"])
             user.set_password(password)
             user.save()
