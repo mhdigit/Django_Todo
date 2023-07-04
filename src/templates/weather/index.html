@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Weather Status</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Weather Status</h1>
+        <div id="weather">waiting for data ...</div>
+ 
+       
+
+    
+        <script>
+            $(document).ready(function() {
+                loc = '{{loc}}'
+                
+           
+    
+                $.ajax({
+                    url: `http://127.0.0.1:8000//weather/api/${loc}`,
+                    dataType: "json",
+                    success: function(data) {
+                        $("#weather").text(data['simple']);
+                    },
+                    error: function() {
+                        $("#weather").text("Unable to fetch weather data.");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
